@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="google-site-verification" content="yUSGmNK2r9SelE_7dRWUeNa284xSRwOnkn-bkJeCZJ8" />
+  <title>Trevo Parafusos - Uniao Da Vitoria</title>
+  <style>
+    /* RESET BÁSICO */
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      user-select: none;
+    }
+
+    body {
+      background: #fff8c4; /* amarelo claro */
+      color: #222;
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a {
+      color: #000;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    a:hover, a:focus {
+      color: #b38f00;
+      outline: none;
+    }
+
+    /* CABEÇALHO E MENU */
+
+    header {
+      background: #f1c40f;
+      padding: 10px 20px;
+      box-shadow: 0 2px 10px rgb(0 0 0 / 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .header-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.6rem;
+      color: #000;
+    }
+
+    /* Ícone trevo 4 folhas preto */
+    .logo svg {
+      width: 36px;
+      height: 36px;
+      fill: #000;
+      stroke: #b38f00;
+      stroke-width: 1.5;
+    }
+
+    nav {
+      position: relative;
+    }
+
+    #navList {
+      list-style: none;
+      display: flex;
+      gap: 30px;
+    }
+
+    #navList a {
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 6px 0;
+      border-bottom: 2px solid transparent;
+    }
+
+    #navList a:hover,
+    #navList a:focus {
+      border-bottom: 2px solid #b38f00;
+    }
+
+    /* BOTÃO MENU MOBILE */
+
+    #menuToggle {
+      display: none;
+      flex-direction: column;
+      justify-content: space-around;
+      width: 28px;
+      height: 28px;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      padding: 0;
+      box-sizing: content-box;
+    }
+
+    #menuToggle span {
+      width: 28px;
+      height: 3px;
+      background: #000;
+      border-radius: 3px;
+      transition: all 0.3s linear;
+      position: relative;
+    }
+
+    #menuToggle.open span:nth-child(1) {
+      transform: rotate(45deg);
+      top: 8px;
+      position: relative;
+    }
+
+    #menuToggle.open span:nth-child(2) {
+      opacity: 0;
+    }
+
+    #menuToggle.open span:nth-child(3) {
+      transform: rotate(-45deg);
+      top: -8px;
+      position: relative;
+    }
+
+    /* CONTEÚDO PRINCIPAL */
+
+    main {
+      flex: 1;
+      max-width: 1000px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    h1, h2, h3 {
+      font-weight: 700;
+      color: #000;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 2rem;
+    }
+
+    /* PRODUTOS - GRID 2x2 */
+
+    .products {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 30px;
+      margin-bottom: 50px;
+    }
+
+    .product-card {
+      background: #f1c40f;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgb(0 0 0 / 0.15);
+      cursor: pointer;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      outline-offset: 4px;
+    }
+
+    .product-card:focus-visible {
+      outline: 3px solid #b38f00;
+    }
+
+    .product-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 25px rgb(0 0 0 / 0.3);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .product-content {
+      padding: 15px 20px;
+      flex-grow: 1;
+    }
+
+    .product-content h3 {
+      margin-bottom: 8px;
+      font-size: 1.4rem;
+    }
+
+    .product-content p {
+      font-size: 1rem;
+      color: #333;
+    }
+
+    /* ARROW - setinha */
+
+    .arrow {
+      font-weight: 900;
+      font-size: 1.6rem;
+      padding: 0 20px;
+      color: #333;
+      user-select: none;
+      transition: transform 0.3s ease;
+      align-self: center;
+    }
+
+    /* SUBCATEGORIAS - esconder por padrão */
+
+    .subcategorias {
+      max-height: 0;
+      overflow: hidden;
+      background: #fff8c4;
+      padding: 0 20px;
+      transition: max-height 0.4s ease, padding 0.4s ease;
+      border-top: 1px solid #b38f00;
+      color: #222;
+      font-size: 0.95rem;
+      line-height: 1.4;
+      user-select: text;
+    }
+
+    .subcategorias.open {
+      padding: 15px 20px 20px 20px;
+      max-height: 400px; /* o suficiente pra caber conteúdo */
+    }
+
+    .subitem {
+      margin-bottom: 8px;
+    }
+
+    /* SOBRE */
+
+    #sobre {
+      max-width: 900px;
+      margin: 0 auto 50px;
+      padding: 0 15px;
+      font-size: 1.1rem;
+      text-align: center;
+      color: #222;
+    }
+
+    /* CONTATO */
+
+    .contact {
+      text-align: center;
+      font-size: 1.1rem;
+      margin-bottom: 50px;
+    }
+
+    .contact a {
+      display: inline-block;
+      margin-top: 12px;
+      font-weight: 700;
+      background: #b38f00;
+      color: #fff;
+      padding: 12px 25px;
+      border-radius: 30px;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 4px 10px rgb(179 143 0 / 0.7);
+    }
+
+    .contact a:hover,
+    .contact a:focus {
+      background-color: #8c6e00;
+      box-shadow: 0 6px 14px rgb(140 110 0 / 0.9);
+      outline: none;
+    }
+
+    /* FOOTER */
+
+    footer {
+      background: #f1c40f;
+      text-align: center;
+      padding: 15px 20px;
+      font-weight: 700;
+      color: #222;
+      box-shadow: inset 0 1px 3px rgb(0 0 0 / 0.1);
+    }
+
+    /* RESPONSIVO */
+
+    @media (max-width: 700px) {
+      .products {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+      }
+
+      #navList {
+        flex-direction: column;
+        background: #f1c40f;
+        position: absolute;
+        right: 20px;
+        top: 48px;
+        border-radius: 8px;
+        padding: 15px 20px;
+        box-shadow: 0 3px 10px rgb(0 0 0 / 0.15);
+        display: none;
+        width: 180px;
+      }
+
+      #navList.open {
+        display: flex;
+      }
+
+      #menuToggle {
+        display: flex;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <a href="#" class="logo" aria-label="Trevo Parafusos - Home">
+        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
+          <circle cx="32" cy="20" r="12" />
+          <circle cx="20" cy="44" r="12" />
+          <circle cx="44" cy="44" r="12" />
+          <circle cx="32" cy="32" r="12" />
+        </svg>
+        Trevo Parafusos
+      </a>
+      <nav>
+        <button id="menuToggle" aria-label="Abrir menu">
+          <span></span><span></span><span></span>
+        </button>
+        <ul id="navList">
+          <li><a href="#produtos">Produtos</a></li>
+          <li><a href="#sobre">Sobre</a></li>
+          <li><a href="#contato">Contato</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="produtos" aria-labelledby="produtos-title">
+      <h2 class="section-title" id="produtos-title">Nossas Categorias</h2>
+      <div class="products">
+
+        <!-- Parafusos -->
+        <div class="product-card" tabindex="0" role="button" aria-expanded="false" aria-controls="parafusos-sub" aria-label="Abrir subcategorias de parafusos" onclick="toggleSub(this)" onkeypress="keyToggle(event, this)">
+          <img src="https://www.metalparsp.com.br/uploads/images/2020/06/1591710701.png" alt="Parafusos"/>
+          <div class="product-content">
+            <h3>Parafusos</h3>
+            <p>Fixadores para várias aplicações, resistentes e duráveis.</p>
+          </div>
+          <div class="arrow">▼</div>
+          <div class="subcategorias" id="parafusos-sub" aria-hidden="true">
+            <div class="subitem"><strong>Inox</strong> – Alta resistência à corrosão.</div>
+            <div class="subitem"><strong>Cabeça Chata</strong> – Acabamento discreto.</div>
+            <div class="subitem"><strong>Francês</strong> – Fixação forte e rápida.</div>
+            <div class="subitem"><strong>Auto Brocante</strong> – Perfuração automática.</div>
+            <div class="subitem"><strong>Para Madeira</strong> – Ideal para madeiras macias e duras.</div>
+          </div>
+        </div>
+
+        <!-- Ferramentas -->
+        <div class="product-card" tabindex="0" role="button" aria-expanded="false" aria-controls="ferramentas-sub" aria-label="Abrir subcategorias de ferramentas" onclick="toggleSub(this)" onkeypress="keyToggle(event, this)">
+          <img src="https://media.istockphoto.com/id/487125438/pt/foto/ferramentas-manuais.jpg?s=170667a&w=0&k=20&c=u7YxRyYHUo0Qh7Rz7u6sMBOrlCrir8DJtGQJvzdfoRo=" alt="Ferramentas"/>
+          <div class="product-content">
+            <h3>Ferramentas</h3>
+            <p>Equipamentos de qualidade para uso profissional e doméstico.</p>
+          </div>
+          <div class="arrow">▼</div>
+          <div class="subcategorias" id="ferramentas-sub" aria-hidden="true">
+            <div class="subitem"><strong>Martelos</strong> – Resistência e ergonomia para qualquer trabalho.</div>
+            <div class="subitem"><strong>Serrotes</strong> – Cortes precisos e durabilidade.</div>
+            <div class="subitem"><strong>Alicates</strong> – Versáteis para diversas funções.</div>
+            <div class="subitem"><strong>Chaves de Fenda</strong> – Vários tamanhos e tipos para montagem.</div>
+          </div>
+        </div>
+
+        <!-- Chaves -->
+        <div class="product-card" tabindex="0" role="button" aria-expanded="false" aria-controls="chaves-sub" aria-label="Abrir subcategorias de chaves" onclick="toggleSub(this)" onkeypress="keyToggle(event, this)">
+          <img src="https://img.lojadomecanico.com.br/IMAGENS/2/301/110654/Jogo-de-Ferramentas-com-Chaves-Combinada-marcon-343531.JPG" alt="Conjunto de chaves"/>
+          <div class="product-content">
+            <h3>Chaves</h3>
+            <p>Chaves combinadas, allen e torx para todos os usos.</p>
+          </div>
+          <div class="arrow">▼</div>
+          <div class="subcategorias" id="chaves-sub" aria-hidden="true">
+            <div class="subitem"><strong>Combinadas</strong> – Resistente e com bom acabamento.</div>
+            <div class="subitem"><strong>Torx</strong> – Melhor torque e segurança contra desgaste.</div>
+            <div class="subitem"><strong>Allen</strong> – Ideal para bicicletas e móveis de montagem.</div>
+          </div>
+        </div>
+
+        <!-- Tintas Spray -->
+        <div class="product-card" tabindex="0" role="button" aria-expanded="false" aria-controls="tintas-sub" aria-label="Abrir subcategorias de tintas spray" onclick="toggleSub(this)" onkeypress="keyToggle(event, this)">
+          <img src="https://tfcvb6.vtexassets.com/arquivos/ids/207774-800-auto?v=637583353415530000&width=800&height=auto&aspect=true" alt="Latas de tinta spray coloridas"/>
+          <div class="product-content">
+            <h3>Tintas Spray</h3>
+            <p>Acabamento rápido e profissional para superfícies diversas.</p>
+          </div>
+          <div class="arrow">▼</div>
+          <div class="subcategorias" id="tintas-sub" aria-hidden="true">
+            <div class="subitem"><strong>Alta Temperatura</strong> – Para escapamentos, motores, churrasqueiras.</div>
+            <div class="subitem"><strong>Coloridas</strong> – Decoração e reparos com estilo.</div>
+            <div class="subitem"><strong>Anticorrosivas</strong> – Proteção durável para metais.</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="sobre" aria-labelledby="sobre-title">
+      <h2 class="section-title" id="sobre-title">Sobre a Trevo Parafusos</h2>
+      <p style="max-width: 800px; margin: 0 auto; text-align: center; line-height: 1.6; font-size: 1.1rem;">
+        A <strong>Trevo Parafusos</strong> é especializada em fixadores, ferramentas e ferragens. Com atendimento de qualidade, produtos confiáveis e estoque completo, somos referência em soluções para construção, marcenaria, manutenção e indústria.
+      </p>
+    </section>
+
+    <section id="contato" class="contact" aria-labelledby="contato-title">
+      <h2 class="section-title" id="contato-title">Fale Conosco</h2>
+      <p>Atendimento via WhatsApp:</p><br />
+      <a href="https://wa.me/554235229207" target="_blank" rel="noopener" aria-label="Abrir WhatsApp para contato com Trevo Parafusos">
+        📞 (42) 3522-9207 - Clique aqui
+      </a>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Trevo Parafusos. Todos os direitos reservados.</p>
+  </footer>
+
+  <script>
+    // MENU RESPONSIVO
+    const menuToggle = document.getElementById('menuToggle');
+    const navList = document.getElementById('navList');
+
+    menuToggle.addEventListener('click', () => {
+      navList.classList.toggle('open');
+      menuToggle.classList.toggle('open');
+    });
+
+    // FECHAR MENU AO CLICAR NO LINK (mobile)
+    navList.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navList.classList.remove('open');
+        menuToggle.classList.remove('open');
+      });
+    });
+
+    // TOGGLE SUBCATEGORIAS - ABRE SÓ 1 CARD POR VEZ
+    function toggleSub(card) {
+      const currentlyOpen = document.querySelector('.subcategorias.open');
+      const sub = card.querySelector('.subcategorias');
+      const arrow = card.querySelector('.arrow');
+      const expanded = card.getAttribute('aria-expanded') === 'true';
+
+      if (currentlyOpen && currentlyOpen !== sub) {
+        // Fecha o aberto anteriormente
+        currentlyOpen.classList.remove('open');
+        currentlyOpen.parentElement.setAttribute('aria-expanded', 'false');
+        const arrowOld = currentlyOpen.parentElement.querySelector('.arrow');
+        arrowOld.style.transform = 'rotate(0deg)';
+        currentlyOpen.setAttribute('aria-hidden', 'true');
+      }
+
+      if (expanded) {
+        sub.classList.remove('open');
+        card.setAttribute('aria-expanded', 'false');
+        arrow.style.transform = 'rotate(0deg)';
+        sub.setAttribute('aria-hidden', 'true');
+      } else {
+        sub.classList.add('open');
+        card.setAttribute('aria-expanded', 'true');
+        arrow.style.transform = 'rotate(180deg)';
+        sub.setAttribute('aria-hidden', 'false');
+      }
+    }
+
+    // Suporte teclado para acessibilidade (Enter ou Espaço)
+    function keyToggle(event, card) {
+      if(event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        toggleSub(card);
+      }
+    }
+  </script>
+</body>
+</html>
